@@ -3,7 +3,9 @@
 # dependencies
 /node_modules
 /.pnp
-/backend/.gitignore
+/backend/node_modules
+/admin-app/node_modules
+/backend/src/uploads
 .pnp.js
 
 # testing
