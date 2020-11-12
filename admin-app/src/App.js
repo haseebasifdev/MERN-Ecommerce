@@ -11,6 +11,8 @@ import { isLoggedIn } from './actions';
 import Products from './containers/Products';
 import Orders from './containers/Orders';
 import Category from './containers/Category';
+import { getAllCategory } from './actions/category.action';
+import { initialData } from './actions/initialData.action';
 function App() {
 
   const auth = useSelector(state => state.auth)
@@ -18,6 +20,7 @@ function App() {
   useEffect(() => {
     if (!auth.authencate) {
       dispatch(isLoggedIn())
+      dispatch(initialData())
     }
   }, [])
   return (

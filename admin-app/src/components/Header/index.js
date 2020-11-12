@@ -36,7 +36,7 @@ function Header() {
             </Nav>
         )
     }
-    return (<Navbar style={{ zIndex: 1 }} bg="light" varient="dark" collapseOnSelect expand="lg">
+    return (<Navbar fixed='top' style={{ zIndex: 1 }} bg="light" varient="dark" collapseOnSelect expand="lg">
 
         <Container fluid>
             {/* <Navbar.Brand href="#home">Admin Dashboard</Navbar.Brand> */}

@@ -9,13 +9,22 @@ const initstate={
 }
 const buildNewCategory=(categories,category)=>{
     let myCatgories=[]
+    if(category.parentId==undefined)
+    {
+        return [
+            ...categories,
+            {
+                ...category
+            }
+        ];
+    }
     for(let cat of categories)
     {
         if(cat._id==category.parentId)
         {
             myCatgories.push({
                 ...cat,
-                children:cat.children &&cat.children.length>0?buildNewCategory([
+                children:cat.children ?buildNewCategory([
                     ...cat.children,
                     {...category
                 }
@@ -26,7 +35,7 @@ const buildNewCategory=(categories,category)=>{
         else{
             myCatgories.push({
                 ...cat,
-                children:cat.children && cat.children.length>0? buildNewCategory(cat.children,category):[]
+                children:cat.children ? buildNewCategory(cat.children,category):[]
             })
         }
         

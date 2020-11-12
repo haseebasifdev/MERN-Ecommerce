@@ -8,8 +8,7 @@ exports.requireSignin=(req,res,next)=>{
         const user=jwt.verify(token,process.env.JWT_SECRET_KEY)
         req.user=user 
         console.log(user)
-        
-    
+         
     }
     else{
         return res.status(400).json({message:'Authorization required'})
