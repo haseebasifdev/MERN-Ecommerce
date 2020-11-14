@@ -3,6 +3,11 @@ const User=require('../../model/user')
 const jwt=require('jsonwebtoken');
 
 const bcrypt=require('bcrypt')
+
+const shortid=require('shortid')
+
+
+
 exports.signup=(req,res)=>{
     User.findOne({ email: req.body.email })
         .exec(async (error, user) => {
@@ -23,7 +28,7 @@ exports.signup=(req,res)=>{
                 lastName,
                 email,
                 hash_password,
-                username: Math.random().toString(),
+                username: shortid.generate(),
                 role:'admin'
             });
             _user.save((error,data)=>{
