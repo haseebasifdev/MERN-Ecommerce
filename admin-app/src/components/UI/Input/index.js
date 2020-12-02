@@ -4,7 +4,8 @@ import { Form } from 'react-bootstrap'
 const Input = (props) => {
     return (
         <Form.Group controlId="formBasicEmail">
-        <Form.Label>{props.label}</Form.Label>
+            {props.label && <Form.Label>{props.label}</Form.Label>}
+        
         <Form.Control 
         value={props.value}
         onChange={props.onChange}

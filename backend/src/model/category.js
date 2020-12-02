@@ -5,6 +5,9 @@ const categorySchema=new mongoose.Schema({
         required:true,
         trim:true
     },
+    type:{
+        type:String
+    },
     slug:{
         type:String,
         required:true,

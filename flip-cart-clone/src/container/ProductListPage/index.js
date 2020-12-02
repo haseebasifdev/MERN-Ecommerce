@@ -9,12 +9,12 @@ const ProductListPage = (props) => {
     const product = useSelector(state => state.product)
     const dispatch = useDispatch()
     const [priceRange, setpriceRange] = useState({
-        under5k:5000,
-        under10k:10000,
-        under15k:15000,
-        under20k:20000,
-        under25k:25000,
-        under30k:30000
+        under5k: 5000,
+        under10k: 10000,
+        under15k: 15000,
+        under20k: 20000,
+        under25k: 25000,
+        under30k: 30000
     })
     useEffect(() => {
         const { match } = props
@@ -25,49 +25,52 @@ const ProductListPage = (props) => {
             <Layout >
                 {
                     Object.keys(product.ProductByPrice).map((key, index) => {
-                        return (
-                            <div className=' container-fluid mt-2'>
+                        if (product.ProductByPrice[key].length > 0) {
+                            return (
+
+                                <div className=' container-fluid mt-2'>
 
 
-                                <Card >
-                                    <Card.Header className=' bg-white'>
-                                        <div className=' justify-content-between d-flex'>
-                                            <div className='my-auto' >{props.match.params.slug} <span>Rs. {priceRange[key]}</span> </div>
-                                            <div><Button variant="primary">view All</Button></div>
-                                        </div>
-                                    </Card.Header>
-                                    <Card.Body><Row>
-                                        {
-                                            product.ProductByPrice[key].map(product =>
+                                    <Card >
+                                        <Card.Header className=' bg-white'>
+                                            <div className=' justify-content-between d-flex'>
+                                                <div className='my-auto' >{props.match.params.slug} <span>Rs. {priceRange[key]}</span> </div>
+                                                <div><Button variant="primary">view All</Button></div>
+                                            </div>
+                                        </Card.Header>
+                                        <Card.Body><Row>
+                                            {
+                                                product.ProductByPrice[key].map(product =>
 
-                                                <Col md={2}>
-                                                    {/* <Card.Title>Special title treatment</Card.Title> */}
-                                                    <Card.Text className='text-center'>
-                                                        <Image src={generatePublicURL(product.productPictures[0].img)} width='100px' />
-                                                        <div className=' text-center mt-3'>
-                                                            <div>
-                                                                Samsung Glaxy Prime
+                                                    <Col md={2}>
+                                                        {/* <Card.Title>Special title treatment</Card.Title> */}
+                                                        <Card.Text className='text-center'>
+                                                            <Image src={generatePublicURL(product.productPictures[0].img)} width='100px' />
+                                                            <div className=' text-center mt-3'>
+                                                                <div>
+                                                                    Samsung Glaxy Prime
                                                             </div>
-                                                            <div>
-                                                                <span className=' badge badge-info px-2 py-1 '>4.3</span>
+                                                                <div>
+                                                                    <span className=' badge badge-info px-2 py-1 '>4.3</span>
+                                                                </div>
+                                                                <div>
+                                                                    <span className=' font-weight-bolder'>{product.price}</span>
+                                                                </div>
                                                             </div>
-                                                            <div>
-                                                                <span className=' font-weight-bolder'>{product.price}</span>
-                                                            </div>
-                                                        </div>
-                                                    </Card.Text>
+                                                        </Card.Text>
 
-                                                </Col>
+                                                    </Col>
 
-                                            )
-                                        }
-                                    </Row>
-                                    </Card.Body>
-                                </Card>
+                                                )
+                                            }
+                                        </Row>
+                                        </Card.Body>
+                                    </Card>
 
 
-                            </div>
-                        )
+                                </div>
+                            )
+                        }
                     })
                 }
 
