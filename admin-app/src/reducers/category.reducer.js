@@ -24,11 +24,9 @@ const buildNewCategory=(categories,category)=>{
         {
             myCatgories.push({
                 ...cat,
-                children:cat.children ?buildNewCategory([
+                children:cat.children ? [ 
                     ...cat.children,
-                    {...category
-                }
-                ],category):[]
+                    {...category}]:[category]
 
             })
         }

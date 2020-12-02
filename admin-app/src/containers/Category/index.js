@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCatgory } from '../../actions/category.action';
+import { addCatgory, getAllCategory, UpdateCatgories } from '../../actions/category.action';
 import Layout from '../../components/Layout'
 import Input from '../../components/UI/Input'
 import ModelWrapper from '../../components/UI/Model';
@@ -46,7 +46,7 @@ export default function Category() {
             categoriess.push({
                 value: category._id,
                 label: category.name,
-                children: category.children.length > 0 && renderCategories(category.children),
+                children: category.children && category.children.length > 0 && renderCategories(category.children),
                 // children: [
                 //     { value: 'phobos', label: 'Phobos' },
                 //     { value: 'deimos', label: 'Deimos' },
@@ -92,19 +92,45 @@ export default function Category() {
         })
         setcheckedArray(checkedArraythis)
         setexpandedArray(expandedArraythis)
-        console.log(categories);
-        console.log(checked, expanded)
+        // console.log(categories);
+        console.log(checkedArraythis, expandedArraythis)
     }
 
     const handleCategoryInput = (key, value, index, type) => {
         if (type = 'checked') {
-           const updatedCheckedArray= checkedArray.map((item, _index) => index == _index ? { ...item, [key]: value } : item)
-           setcheckedArray(updatedCheckedArray);
+            const updatedCheckedArray = checkedArray.map((item, _index) => index == _index ? { ...item, [key]: value } : item)
+            setcheckedArray(updatedCheckedArray);
         }
         if (type = 'expanded') {
-            const updatedExpandedArray=expandedArray.map((item, _index) => index == _index ? { ...item, [key]: value } : item)
+            const updatedExpandedArray = expandedArray.map((item, _index) => index == _index ? { ...item, [key]: value } : item)
             setexpandedArray(updatedExpandedArray);
         }
+    }
+    const updateCategoriesForm = () => {
+        setupdateCategoryModel(false)
+        var formData = new FormData();
+
+        expandedArray.length>0 && expandedArray.forEach((item, index) => {
+        
+            formData.append('_id', item.value)
+            formData.append('name', item.name)
+            formData.append('parentId', item.parentId ? item.parentId : "")
+            formData.append('type', item.type)
+        });
+        checkedArray.length>0 && checkedArray.forEach((item, index) => {
+          
+            formData.append('_id', item.value)
+            formData.append('name', item.name)
+            formData.append('parentId', item.parentId ? item.parentId : "")
+            formData.append('type', item.type)
+        });
+        dispatch(UpdateCatgories(formData))
+        .then(result=>{
+            if(result){
+                dispatch(getAllCategory())
+            }
+        })
+
     }
     return (
         <Layout sidebar>
@@ -185,7 +211,7 @@ export default function Category() {
 
             <ModelWrapper
                 show={updateCategoryModel}
-                handleClose={() => setupdateCategoryModel(false)}
+                handleClose={() => updateCategoriesForm()}
                 modalTitle={'Update Categories'}
                 size="lg"
             >
@@ -265,12 +291,12 @@ export default function Category() {
                     )
                 }
 
-                <input
+                {/* <input
                     className="form-control"
                     type="file"
                     name="categoryImage"
                     onChange={handleCategoryimage}
-                />
+                /> */}
 
             </ModelWrapper>
 

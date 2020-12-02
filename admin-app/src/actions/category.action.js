@@ -45,5 +45,33 @@ export const addCatgory=(form)=>{
         }
     }
 }
+export const UpdateCatgories=(form)=>{
+    return async dispatch=>{
+        dispatch({
+            type:categoryConstants.ADD_NEW_CATEGORY_REQUEST
+        })
+        const res=await axios.post('/categories/update',form)
+        if(res.status==200)
+        {
+            return true;
+        }
+        console.log(res);
+        // if(res.status==201)
+        // {
+        //     console.log(res);
+        //     // dispatch({
+        //     //     type:categoryConstants.ADD_NEW_CATEGORY_SUCCESS,
+        //     //     payload:{category:res.data.category}
+        //     // })
+        // }
+        // else{
+        //     console.log(res);
+        //     // dispatch({
+        //     //     type:categoryConstants.ADD_NEW_CATEGORY_FAILURE,
+        //     //     payload:res.data.error
+        //     // })
+        // }
+    }
+}
 
 

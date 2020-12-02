@@ -75,3 +75,43 @@ exports.getCategories=(req,res)=>{
         }
     })
 }
+
+
+exports.updateCategory= async (req,res)=>{
+    console.log('requested',req.body);
+    const{_id,name,parentId,type}=req.body;
+    const updatedCategories=[];
+    if(name instanceof Array){
+        for(let i=0;i<name.length;i++){
+            const category={
+                name:name[i],
+                type:type[i]
+            };
+            if(parentId !=''){
+                category.parentId=parentId[i]
+            }
+            const id=_id[i]
+            const updatedCategory= await Category.findByIdAndUpdate({_id:_id[i]},category,{new:true})
+            updatedCategories.push(updatedCategory);
+           
+        }
+        return res.status(200).json({updatedCategories}) 
+    }else{
+        const category={
+            name,
+            type
+        };
+        if(parentId !=''){
+            category.parentId=parentId
+        }
+        // const id=_id[i]
+        const updatedCategory= await Category.findByIdAndUpdate({_id},category,{new:true})
+        // updatedCategories.push(updatedCategory);
+        return res.status(200).json({updatedCategory})
+    }
+    res.status(200).json({body:req.body})
+}
+
+
+
+

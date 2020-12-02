@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const express=require('express')
 const { requireSignin, adminMiddleware } = require('../commen-middleware')
-const { addCategory, getCategories } = require('../controller/category')
+const { addCategory, getCategories ,updateCategory} = require('../controller/category')
 // const upload=require('../imageuploader/index')
 const multer=require('multer')
 const shortid=require('shortid')
@@ -23,6 +23,7 @@ const router=express.Router()
 
 // router.post('/category/create',requireSignin,adminMiddleware ,upload.single('categoryImage'),addCategory)
 router.post('/category/create',requireSignin,adminMiddleware ,upload.single('categoryImage'),addCategory)
+router.post('/categories/update',requireSignin,adminMiddleware ,upload.array('categoryImage'),updateCategory)
 router.get('/category/getCategory',getCategories)
 
 module.exports=router
