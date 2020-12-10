@@ -8,6 +8,10 @@ import ModelWrapper from '../../components/UI/Model';
 import CheckboxTree from 'react-checkbox-tree';
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
 import { IoIosArrowDown, IoIosCheckbox, IoIosCheckboxOutline, IoIosArrowForward } from 'react-icons/io'
+import DeleteModel from './components/DeleteModel';
+import AddCategoryModel from './components/AddCategoryModel'
+import UpdateModel from './components/UpdateModel';
+import './style.css'
 /**
  * @auther
  * @function Category
@@ -114,14 +118,14 @@ export default function Category() {
         console.log('Delete Funcytion call', checkedArray, expandedArray)
         if (checkedArray.length > 0) {
             console.log('Delete Funcytion call', checkedArray, expandedArray)
-            dispatch(deleCategories(checkedArray))  
+            dispatch(deleCategories(checkedArray))
                 .then(result => {
                     if (result) {
                         dispatch(getAllCategory())
                     }
                 })
-                setcheckedArray([]);
-                setexpandedArray([]);
+            setcheckedArray([]);
+            setexpandedArray([]);
         }
     }
     const handleCategoryInput = (key, value, index, type) => {
@@ -212,144 +216,33 @@ export default function Category() {
                     </Col>
                 </Row>
             </Container>
-            <ModelWrapper
-                show={deleteModel}
-                handleClose={()=>DeleteCategories()}
-                modelTitle={'Are You Sure to Delete'}
-                btn={"Delete"}
-                handleclosedelModel={colseDeleteModel}
+            <DeleteModel
+                deleteModel={deleteModel}
+                colseDeleteModel={colseDeleteModel}
+                deleteCategories={DeleteCategories}
+            />
 
-            >
-
-            </ModelWrapper>
-
-
-            <ModelWrapper
+            <AddCategoryModel
                 show={show}
-                handleClose={AddNewCategory}
-                modelTitle={'Add New Category'}
-
-            >
-                <Input
-                    type='text'
-                    value={categoryName}
-                    placeholder={'Category name'}
-                    onChange={(e) => setcategoryName(e.target.value)}
-                />
-                <select className='form-control'
-                    value={parentCategoryId}
-                    onChange={e => setparentCategoryId(e.target.value)}
-                >
-                    <option>Select Category</option>
-                    {createcategoryList(category.categories)
-                        .map(option => <option key={option.key} value={option.value}>{option.name}</option>)
-                    }
-                </select>
-                <input
-                    className="form-control"
-                    type="file"
-                    name="categoryImage"
-                    onChange={handleCategoryimage}
-                />
-
-            </ModelWrapper>
+                AddNewCategory={AddNewCategory}
+                setcategoryName={setcategoryName}
+                setparentCategoryId={setparentCategoryId}
+                createcategoryList={createcategoryList}
+                handleCategoryimage={handleCategoryimage}
+                categoryName={categoryName}
+                parentCategoryId={parentCategoryId}
+                categoryList={createcategoryList(category.categories)}
+            />
 
 
-
-            {/* Model Edit category */}
-
-            <ModelWrapper
-                show={updateCategoryModel}
-                handleClose={() => updateCategoriesForm()}
-                modelTitle={'Update Categories'}
-                size="lg"
-            >
-                <Row>
-                    <Col>
-                        <h4>Expended
-                    </h4>
-                    </Col>
-                </Row>
-                {
-                    expandedArray.length > 0 &&
-                    expandedArray.map((item, index) =>
-                        <Row key={index}>
-                            <Col>
-                                <Input
-                                    type='text'
-                                    value={item.name}
-                                    placeholder={'Category name'}
-                                    onChange={(e) => handleCategoryInput('name', e.target.value, index, 'expanded')}
-                                /></Col>
-                            <Col> <select className='form-control'
-                                value={item.parentId}
-                                onChange={(e) => handleCategoryInput('parentId', e.target.value, index, 'expanded')}
-                            >
-                                <option>Select Category</option>
-                                {createcategoryList(category.categories)
-                                    .map(option => <option key={option.key} value={option.value}>{option.name}</option>)
-                                }
-                            </select>
-                            </Col>
-                            <Col>
-                                <select className='form-control'>
-                                    <option>Select Type</option>
-                                    <option value="store">Store</option>
-                                    <option value="product">Product</option>
-                                    <option value="page">Page</option>
-                                </select>
-                            </Col>
-                        </Row>
-
-
-                    )
-                }
-                <h4>Checked</h4>
-                {
-                    checkedArray.length > 0 &&
-                    checkedArray.map((item, index) =>
-                        <Row key={index}>
-                            <Col>
-                                <Input
-                                    type='text'
-                                    value={item.name}
-                                    placeholder={'Category name'}
-                                    onChange={(e) => handleCategoryInput('name', e.target.value, index, 'checked')}
-                                /></Col>
-                            <Col> <select className='form-control'
-                                value={item.parentId}
-                                onChange={(e) => handleCategoryInput('parentId', e.target.value, index, 'checked')}
-                            >
-                                <option>Select Category</option>
-                                {createcategoryList(category.categories)
-                                    .map(option => <option key={option.key} value={option.value}>{option.name}</option>)
-                                }
-                            </select>
-                            </Col>
-                            <Col>
-                                <select className='form-control'>
-                                    <option>Select Type</option>
-                                    <option value="store">Store</option>
-                                    <option value="product">Product</option>
-                                    <option value="page">Page</option>
-                                </select>
-                            </Col>
-                        </Row>
-
-
-                    )
-                }
-
-                {/* <input
-                    className="form-control"
-                    type="file"
-                    name="categoryImage"
-                    onChange={handleCategoryimage}
-                /> */}
-
-            </ModelWrapper>
-
-
+            <UpdateModel
+                categoryList={createcategoryList(category.categories)}
+                handleCategoryInput={handleCategoryInput}
+                expandedArray={expandedArray}
+                updateCategoriesForm={() => updateCategoriesForm()}
+                updateCategoryModel={updateCategoryModel}
+                checkedArray={checkedArray}
+            />
         </Layout>
     )
 }
