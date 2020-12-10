@@ -13,9 +13,15 @@ function ModelWrapper(props) {
             </Modal.Body>
             <Modal.Footer>
 
-                <Button variant="primary" onClick={props.handleClose}>
-                    Save Changes
-  </Button>
+                <Button variant={props.btn? "danger":"primary"} onClick={props.handleClose}>
+                   {props.btn? props.btn:'Save Changes'} 
+                </Button>
+                {props.btn ? 
+                <Button variant="primary" onClick={props.handleclosedelModel}>
+                    Cancle 
+                 </Button>   :
+                 '' 
+            }
             </Modal.Footer>
         </Modal>
     )

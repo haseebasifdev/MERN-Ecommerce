@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Container, Row, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCatgory, getAllCategory, UpdateCatgories } from '../../actions/category.action';
+import { addCatgory, getAllCategory, deleCategories, UpdateCatgories } from '../../actions/category.action';
 import Layout from '../../components/Layout'
 import Input from '../../components/UI/Input'
 import ModelWrapper from '../../components/UI/Model';
@@ -24,20 +24,23 @@ export default function Category() {
     const [checkedArray, setcheckedArray] = useState([])
     const [expandedArray, setexpandedArray] = useState([])
     const [updateCategoryModel, setupdateCategoryModel] = useState(false)
+    const [deleteModel, setdeleteModel] = useState(false)
     // useEffect(() => {
     //     dispatch(getAllCategory());
     // }, [])
     const [show, setShow] = useState(false);
-    const handleClose = () => {
+    const AddNewCategory = () => {
         const form = new FormData();
-        form.append('name', categoryName);
-        form.append('parentId', parentCategoryId);
-        form.append('categoryImage', categoryImage);
-        console.log(categoryName, parentCategoryId, categoryImage);
-        dispatch(addCatgory(form));
+        if (categoryName) {
+            form.append('name', categoryName);
+            form.append('parentId', parentCategoryId);
+            form.append('categoryImage', categoryImage);
+            console.log(categoryName, parentCategoryId, categoryImage);
+            dispatch(addCatgory(form));
+        }
         setShow(false)
     };
-    const handleShow = () => setShow(true);
+    const ShowAddModel = () => setShow(true);
 
     const renderCategories = (categories) => {
         let categoriess = []
@@ -77,8 +80,11 @@ export default function Category() {
         setcategoryImage(e.target.files[0])
 
     }
-    const updatecategory = () => {
+    const setCategoryform = () => {
+        updatecategory();
         setupdateCategoryModel(true);
+    }
+    const updatecategory = () => {
         const categories = createcategoryList(category.categories);
         const checkedArraythis = [];
         const expandedArraythis = [];
@@ -93,9 +99,31 @@ export default function Category() {
         setcheckedArray(checkedArraythis)
         setexpandedArray(expandedArraythis)
         // console.log(categories);
-        console.log(checkedArraythis, expandedArraythis)
+        console.log('updated Funcytion call', checkedArray, expandedArray)
     }
-
+    const ShowDeleteModel = () => {
+        updatecategory();
+        setdeleteModel(true);
+    }
+    const DeleteCategories = () => {
+        setdeleteModel(false);
+        const formData = new FormData();
+        checkedArray.length > 0 && checkedArray.forEach((item, index) => {
+            formData.append('_id', item.value)
+        });
+        console.log('Delete Funcytion call', checkedArray, expandedArray)
+        if (checkedArray.length > 0) {
+            console.log('Delete Funcytion call', checkedArray, expandedArray)
+            dispatch(deleCategories(checkedArray))  
+                .then(result => {
+                    if (result) {
+                        dispatch(getAllCategory())
+                    }
+                })
+                setcheckedArray([]);
+                setexpandedArray([]);
+        }
+    }
     const handleCategoryInput = (key, value, index, type) => {
         if (type = 'checked') {
             const updatedCheckedArray = checkedArray.map((item, _index) => index == _index ? { ...item, [key]: value } : item)
@@ -110,27 +138,35 @@ export default function Category() {
         setupdateCategoryModel(false)
         var formData = new FormData();
 
-        expandedArray.length>0 && expandedArray.forEach((item, index) => {
-        
+        expandedArray.length > 0 && expandedArray.forEach((item, index) => {
+
             formData.append('_id', item.value)
             formData.append('name', item.name)
             formData.append('parentId', item.parentId ? item.parentId : "")
             formData.append('type', item.type)
         });
-        checkedArray.length>0 && checkedArray.forEach((item, index) => {
-          
+        checkedArray.length > 0 && checkedArray.forEach((item, index) => {
+
             formData.append('_id', item.value)
             formData.append('name', item.name)
             formData.append('parentId', item.parentId ? item.parentId : "")
             formData.append('type', item.type)
         });
         dispatch(UpdateCatgories(formData))
-        .then(result=>{
-            if(result){
-                dispatch(getAllCategory())
-            }
-        })
+            .then(result => {
+                if (result) {
+                    dispatch(getAllCategory())
+                    setcheckedArray([])
+                    setexpandedArray([]);
+                }
+            })
 
+    }
+    const colseDeleteModel = () => {
+        setdeleteModel(false);
+        console.log('updated Funcytion call', checkedArray, expandedArray)
+        setcheckedArray([])
+        setexpandedArray([])
     }
     return (
         <Layout sidebar>
@@ -139,7 +175,7 @@ export default function Category() {
                     <Col md={12}>
                         <div className=" d-flex justify-content-between">
                             <h3>Category</h3>
-                            <button className=" btn btn-outline-primary" onClick={handleShow}>Add</button>
+                            <button className=" btn btn-outline-primary" onClick={ShowAddModel}>Add</button>
                         </div>
                     </Col>
                 </Row>
@@ -171,15 +207,27 @@ export default function Category() {
                 </Row>
                 <Row>
                     <Col md={12}>
-                        <button className=" btn btn-danger mr-2">Delete</button>
-                        <button className="btn btn-warning" onClick={updatecategory}>Edit</button>
+                        <button className=" btn btn-danger mr-2" onClick={ShowDeleteModel}>Delete</button>
+                        <button className="btn btn-warning" onClick={setCategoryform}>Edit</button>
                     </Col>
                 </Row>
             </Container>
             <ModelWrapper
+                show={deleteModel}
+                handleClose={()=>DeleteCategories()}
+                modelTitle={'Are You Sure to Delete'}
+                btn={"Delete"}
+                handleclosedelModel={colseDeleteModel}
+
+            >
+
+            </ModelWrapper>
+
+
+            <ModelWrapper
                 show={show}
-                handleClose={handleClose}
-                modalTitle={'Add New Category'}
+                handleClose={AddNewCategory}
+                modelTitle={'Add New Category'}
 
             >
                 <Input
@@ -207,12 +255,13 @@ export default function Category() {
             </ModelWrapper>
 
 
+
             {/* Model Edit category */}
 
             <ModelWrapper
                 show={updateCategoryModel}
                 handleClose={() => updateCategoriesForm()}
-                modalTitle={'Update Categories'}
+                modelTitle={'Update Categories'}
                 size="lg"
             >
                 <Row>

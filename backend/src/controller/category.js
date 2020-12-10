@@ -112,6 +112,31 @@ exports.updateCategory= async (req,res)=>{
     res.status(200).json({body:req.body})
 }
 
+exports.deleteCategory= async (req,res)=>{
+    console.log('Came in to dlete');
+    // console.log(req);
+    const data=req.body;
+    console.log("_ID",req.body);   
+    const updatedCategories=[];
+    if(data.length>0){
+        
+        console.log("Instance",req.body.length);
+        for(let i=0;i<data.length;i++){
+            const {value}=data[i];
+            const updatedCategory= await Category.findByIdAndDelete({_id:value},category)    
+        }
+        return res.status(200).json({updatedCategories}) 
+    }
+    // else{
+    //     console.log("NOt Instance",req.body.length);
+    //     const {value}=data[0]
+
+    //     const updatedCategory= await Category.findByIdAndUpdate({_id},category)
+    //     return res.status(200).json({updatedCategory})
+    // }
+    res.status(200).json({body:req.body})
+}
+
 
 
 
