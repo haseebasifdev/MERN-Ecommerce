@@ -9,9 +9,8 @@
 1. Make sure MongoDB is running on your system 
 2. Clone this repository
 3. Open command line in the admin-app, backend, flip-cart-clone folder,
-   - To install dependencies, run ```  npm install  ``` or ``` yarn ```
-   - To run the application for development, run ```  npm run development  ``` or ``` yarn development ```
-4. Open [localhost:3000](http://localhost:3000/) in the browser
+   - To install dependencies, run ```  npm install  ``` or ``` yarn ``` and then run ```  npm start  ```
+4. App will automatically open in the browser with different localhost
 ---- 
 ### Technical Requirements
 This course has the following software requirements:<br/>
