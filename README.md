@@ -13,12 +13,8 @@
 4. App will automatically open in the browser with different localhost
 ---- 
 ### Technical Requirements
-This course has the following software requirements:<br/>
 SETUP AND INSTALLATION
 Minimum Hardware Requirements
-For successful completion of this course, students will require the computer systems with at least the following:
-
-
 
 Software Requirements
 
