@@ -1,4 +1,4 @@
-# MERN-Ecommerce(Flipcart-clone)  -> This project is not completed yet.
+# MERN-Ecommerce(Flipcart-clone)  -> Working...
 ##### Admin side mostly features are working for crud operation
 #### What you need to run this code
 1. Node (13.12.0)
